@@ -15,7 +15,7 @@
 
 (require 'color-theme)
 (color-theme-initialize)
-(color-theme-subtle-hacker)
+(color-theme-tango)
 
 
 ;; package manager
