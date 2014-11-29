@@ -11,23 +11,9 @@
 (ido-mode t)
 
 ;; Color Theme
-(add-to-list 'load-path "~/.emacs.d/color-theme-6.6.0/")
-
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-tango)
 
 
-;; package manager
 
-(add-to-list 'load-path "~/.emacs.d/package-el/")
-
-(require 'package)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents))
 
 ;; Org mode
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -46,11 +32,7 @@
 
 ;; clojure
 
-(defvar my-packages '(clojure-mode
-               nrepl))
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
+
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
