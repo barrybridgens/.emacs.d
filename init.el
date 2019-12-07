@@ -7,6 +7,7 @@
 
 ;;; emacs setup
 
+(cd "/home/barry/Dropbox/Documents/org")
 
 (setq inhibit-startup-message t)
 
@@ -91,6 +92,13 @@
 ;(require 'evil)
 ;(evil-mode 1)
 
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode))
+
+;; Clojure
+(use-package cider
+  :ensure t)
+
 
 ;; Org mode
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
@@ -104,13 +112,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- ;'(custom-enabled-themes (quote (tango-dark)))
- '(org-agenda-files (list org-directory))
  '(org-directory "~/Dropbox/Documents/org")
+ '(org-agenda-files (list org-directory))
  '(package-selected-packages
    (quote
-	(zenburn-theme auto-complete avy try use-package slime)))
-
+	(go-playground go-mode cider zenburn-theme auto-complete avy try use-package slime)))
  '(tool-bar-mode nil))
 
 (setq org-agenda-dim-blocked-tasks 'invisible)
@@ -120,6 +126,8 @@
 (setq org-enforce-todo-dependencies t)
 (setq org-hide-leading-stars t)
 (setq org-startup-indented t)
+(setq org-agenda-todo-ignore-scheduled t)
+(setq org-agenda-todo-ignore-deadlines t)
 (global-set-key "\C-ca" 'org-agenda)
 
 
@@ -133,7 +141,11 @@
 ;; clojure
 
 
-
+;; golang
+(use-package go-mode
+  :ensure t)
+(use-package go-playground
+  :ensure t)
 
 
 (custom-set-faces
