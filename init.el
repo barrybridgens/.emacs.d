@@ -96,8 +96,8 @@
   (global-display-line-numbers-mode))
 
 ;; Clojure
-(use-package cider
-  :ensure t)
+;(use-package cider
+;  :ensure t)
 
 
 ;; Org mode
@@ -134,6 +134,11 @@
 ;;; Programming
 
 (setq default-tab-width 4)
+
+(use-package magit
+  :ensure t)
+
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; lisp
 (global-set-key "\C-cs" 'slime-selector)
