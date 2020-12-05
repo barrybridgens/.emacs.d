@@ -1,0 +1,173 @@
+#+STARTUP: overview
+
+* Startup Directory
+#+begin_src emacs-lisp
+  (cd "/home/barry/Dropbox/Documents/org")
+#+end_src
+
+* Interface Tweaks
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (set-scroll-bar-mode 'right)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+#+end_src
+
+* Try
+#+begin_src emacs-lisp
+  (use-package try
+    :ensure t)
+#+end_src
+
+* Which-key
+Brings up some elp
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :config
+    (which-key-mode))
+#+end_src
+
+* Swiper
+#+begin_src emacs-lisp
+  (use-package counsel
+    :ensure t
+  )
+
+  (use-package swiper
+    :ensure try
+    :config
+    (progn
+          (ivy-mode 1)
+          (setq ivy-use-virtual-buffers t)
+          (global-set-key "\C-s" 'swiper)
+          (global-set-key (kbd "C-c C-r") 'ivy-resume)
+          (global-set-key (kbd "<f6>") 'ivy-resume)
+          (global-set-key (kbd "M-x") 'counsel-M-x)
+          (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+          (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+          (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+          (global-set-key (kbd "<f1> l") 'counsel-load-library)
+          (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+          (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+          (global-set-key (kbd "C-c g") 'counsel-git)
+          (global-set-key (kbd "C-c j") 'counsel-git-grep)
+          (global-set-key (kbd "C-c k") 'counsel-ag)
+          (global-set-key (kbd "C-x l") 'counsel-locate)
+          (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+          (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+          ))
+#+end_src
+
+* Avy
+#+begin_src emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind ("M-s" . avy-goto-char))
+#+end_src
+
+* ibuffer
+#+begin_src emacs-lisp
+  (defalias 'list-buffers 'ibuffer)
+#+end_src
+
+* Auto-complete
+#+begin_src emacs-lisp
+  (use-package auto-complete
+    :ensure t
+    :init
+    (progn
+          (ac-config-default)
+          (global-auto-complete-mode t)
+          ))
+#+end_src
+
+* Theme
+#+begin_src emacs-lisp
+  (use-package zenburn-theme
+    :ensure t
+    :config (load-theme 'zenburn t))
+#+end_src
+
+* Line Numbers
+#+begin_src emacs-lisp
+  (when (version<= "26.0.50" emacs-version )
+    (global-display-line-numbers-mode))
+#+end_src
+
+* org-mode
+** General
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+  (add-hook 'org-mode-hook 'turn-on-font-lock) ; not needed when global-font-lock-mode is on
+  (global-set-key "\C-cl" 'org-store-link)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cb" 'org-iswitchb)
+
+
+  (setq org-directory "~/Dropbox/Documents/org")
+  (setq org-agenda-files (list org-directory))
+  (setq org-agenda-dim-blocked-tasks 'invisible)
+  (setq org-agenda-todo-ignore-deadlines (quote far))
+  (setq org-deadline-warning-days 2)
+  (setq org-enforce-todo-checkbox-dependencies t)
+  (setq org-enforce-todo-dependencies t)
+  (setq org-hide-leading-stars t)
+  (setq org-startup-indented t)
+  (setq org-agenda-todo-ignore-scheduled t)
+  (setq org-agenda-todo-ignore-deadlines t)
+  (global-set-key "\C-ca" 'org-agenda)
+#+end_src
+** org-bullets
+#+begin_src emacs-lisp
+  (use-package org-bullets
+      :ensure t)
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+** org-roam
+#+begin_src emacs-lisp
+  (use-package org-roam
+        :hook
+        (after-init . org-roam-mode)
+        :custom
+        (org-roam-directory "~/Dropbox/Documents/org")
+        :bind (:map org-roam-mode-map
+                (("C-c n l" . org-roam)
+                 ("C-c n f" . org-roam-find-file)
+                 ("C-c n j" . org-roam-jump-to-index)
+                 ("C-c n b" . org-roam-switch-to-buffer)
+                 ("C-c n g" . org-roam-graph))
+                :map org-mode-map
+                (("C-c n i" . org-roam-insert))))
+#+end_src
+
+* Programming
+** General
+#+begin_src emacs-lisp
+  (setq default-tab-width 4)
+#+end_src
+** Magit
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t)
+
+  (global-set-key (kbd "C-x g") 'magit-status)
+#+end_src
+** Slime
+#+begin_src emacs-lisp
+  (global-set-key "\C-cs" 'slime-selector)
+#+end_src
+** Clojure
+#+begin_src emacs-lisp
+  (use-package cider
+    :ensure t)
+#+end_src
+** Golang
+#+begin_src emacs-lisp
+  (use-package go-mode
+    :ensure t)
+  (use-package go-playground
+    :ensure t)
+#+end_src
+
+
