@@ -104,7 +104,6 @@ Brings up some elp
   (global-set-key "\C-ca" 'org-agenda)
   (global-set-key "\C-cb" 'org-iswitchb)
 
-
   (setq org-directory "~/Dropbox/Documents/org")
   (setq org-agenda-files (list org-directory))
   (setq org-agenda-dim-blocked-tasks 'invisible)
@@ -114,9 +113,15 @@ Brings up some elp
   (setq org-enforce-todo-dependencies t)
   (setq org-hide-leading-stars t)
   (setq org-startup-indented t)
-  (setq org-agenda-todo-ignore-scheduled t)
-  (setq org-agenda-todo-ignore-deadlines t)
+  ;(setq org-agenda-todo-ignore-scheduled t)
+  ;(setq org-agenda-todo-ignore-deadlines t)
+  (setq org-agenda-todo-ignore-with-date t)
   (global-set-key "\C-ca" 'org-agenda)
+  (setq org-todo-keywords
+        '((sequence "TODO" "WAITING" "PROJECT" "|"  "DELEGATED" "CANCELLED" "DONE")))
+  (setq org-highest-priority 65)
+  (setq org-lowest-priority 69)
+  (setq org-default-priority 68)
 #+end_src
 ** org-bullets
 #+begin_src emacs-lisp
