@@ -141,6 +141,17 @@ Brings up some elp
                 (("C-c n i" . org-roam-insert))))
 #+end_src
 
+* Projectile
+#+begin_src emacs-lisp
+(use-package projectile
+  :ensure t
+  :init
+  (projectile-mode +1)
+  :bind (:map projectile-mode-map
+              ("s-p" . projectile-command-map)
+              ("C-c p" . projectile-command-map)))
+#+end_src
+
 * Programming
 ** General
 #+begin_src emacs-lisp
