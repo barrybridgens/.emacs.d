@@ -69,8 +69,47 @@ Brings up some elp
 * ibuffer
 #+begin_src emacs-lisp
   (defalias 'list-buffers 'ibuffer)
-#+end_src
 
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (setq ibuffer-saved-filter-groups
+        (quote (("default"
+                 ("dired" (mode . dired-mode))
+                 ("org" (name . "^.*org$"))
+                 ("magit" (mode . magit-mode))
+                 ("IRC" (or (mode . circe-channel-mode) (mode . circe-server-mode)))
+                 ("web" (or (mode . web-mode) (mode . js2-mode)))
+                 ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+                 ("mu4e" (or
+
+                          (mode . mu4e-compose-mode)
+                          (name . "\*mu4e\*")
+                          ))
+                 ("programming" (or
+                                 (mode . clojure-mode)
+                                 (mode . clojurescript-mode)
+                                 (mode . python-mode)
+                                 (mode . c++-mode)))
+                 ("emacs" (or
+                           (name . "^\\*scratch\\*$")
+                           (name . "^\\*Messages\\*$")))
+                 ))))
+  (add-hook 'ibuffer-mode-hook
+            (lambda ()
+              (ibuffer-auto-mode 1)
+              (ibuffer-switch-to-saved-filter-groups "default")))
+
+  ;; Don't show filter groups if there are no buffers in that group
+  (setq ibuffer-show-empty-filter-groups nil)
+#+end_src
+* emmet-mode
+#+begin_src emacs-lisp
+  (use-package emmet-mode
+    :ensure t
+    :init
+    (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+    (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+    )
+#+end_src
 * ace-window
 #+begin_src emacs-lisp
   (use-package ace-window
@@ -96,9 +135,6 @@ Brings up some elp
 
 * Theme
 #+begin_src emacs-lisp
-  ;(use-package zenburn-theme
-  ;  :ensure t
-  ;  :config (load-theme 'zenburn t))
   (use-package darkburn-theme
     :ensure t
     :config (load-theme 'darkburn t))
@@ -176,6 +212,7 @@ Brings up some elp
 ** General
 #+begin_src emacs-lisp
   (setq default-tab-width 4)
+  (show-paren-mode 1)
 #+end_src
 ** Magit
 #+begin_src emacs-lisp
