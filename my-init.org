@@ -10,7 +10,7 @@
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
-  (set-scroll-bar-mode 'right)
+  (scroll-bar-mode -1)
   (global-set-key (kbd "<f5>") 'revert-buffer)
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -316,7 +316,7 @@ Brings up some elp
 
   (global-set-key (kbd "C-x g") 'magit-status)
 
-  (setq auth-sources '("~/.authinfo"))
+  ;; (setq auth-sources '("~/.authinfo"))
 #+end_src
 ** Slime
 #+begin_src emacs-lisp
