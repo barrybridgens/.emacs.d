@@ -9,10 +9,79 @@
 #+begin_src emacs-lisp
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
+  (menu-bar-mode -1)
   (set-scroll-bar-mode 'right)
   (global-set-key (kbd "<f5>") 'revert-buffer)
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  (defvar efs/frame-transparency '(90 . 90))
+
+  ;; Set up the visible bell
+  (setq visible-bell t)
+
+  ;; Set frame transparency
+  (set-frame-parameter (selected-frame) 'alpha efs/frame-transparency)
+  (add-to-list 'default-frame-alist `(alpha . ,efs/frame-transparency))
+  (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
+* Key Bindings
+** general.el
+#+begin_src emacs-lisp
+  (use-package general
+    :ensure t
+    :config
+    (general-create-definer bjb/leader-keys
+      :keymaps '(normal insert visual emacs)
+      :prefix "SPC"
+      :global-prefix "C-SPC")
+
+    (bjb/leader-keys
+      "t"  '(:ignore t :which-key "toggles")
+      "tt" '(counsel-load-theme :which-key "choose theme")))
+#+end_src
+** Evil
+#+begin_src emacs-lisp
+  (use-package evil
+    :ensure t
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump nil)
+    :config
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+    ;; Use visual line motions even outside of visual-line-mode buffers
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
+
+  (use-package evil-collection
+    :ensure t
+    :after evil
+    :config
+    (evil-collection-init))
+#+end_src
+** Hydra
+#+begin_src emacs-lisp
+  (use-package hydra
+    :ensure t)
+
+  (defhydra hydra-text-scale (:timeout 4)
+    "scale text"
+    ("j" text-scale-increase "in")
+    ("k" text-scale-decrease "out")
+    ("f" nil "finished" :exit t))
+
+  (bjb/leader-keys
+    "ts" '(hydra-text-scale/body :which-key "scale text"))
+#+end_src
 * Try
 #+begin_src emacs-lisp
   (use-package try
@@ -30,33 +99,38 @@ Brings up some elp
 
 * Swiper
 #+begin_src emacs-lisp
-  (use-package counsel
+  (use-package ivy-rich
     :ensure t
-  )
+    :init
+    (ivy-rich-mode 1))
 
-  (use-package swiper
-    :ensure try
-    :config
-    (progn
-          (ivy-mode 1)
-          (setq ivy-use-virtual-buffers t)
-          (global-set-key "\C-s" 'swiper)
-          (global-set-key (kbd "C-c C-r") 'ivy-resume)
-          (global-set-key (kbd "<f6>") 'ivy-resume)
-          (global-set-key (kbd "M-x") 'counsel-M-x)
-          (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-          (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-          (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-          (global-set-key (kbd "<f1> l") 'counsel-load-library)
-          (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-          (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-          (global-set-key (kbd "C-c g") 'counsel-git)
-          (global-set-key (kbd "C-c j") 'counsel-git-grep)
-          (global-set-key (kbd "C-c k") 'counsel-ag)
-          (global-set-key (kbd "C-x l") 'counsel-locate)
-          (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-          (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-          ))
+    (use-package counsel
+      :ensure t
+    )
+
+    (use-package swiper
+      :ensure try
+      :config
+      (progn
+            (ivy-mode 1)
+            (setq ivy-use-virtual-buffers t)
+            (global-set-key "\C-s" 'swiper)
+            (global-set-key (kbd "C-c C-r") 'ivy-resume)
+            (global-set-key (kbd "<f6>") 'ivy-resume)
+            (global-set-key (kbd "M-x") 'counsel-M-x)
+            (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+            (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+            (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+            (global-set-key (kbd "<f1> l") 'counsel-load-library)
+            (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+            (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+            (global-set-key (kbd "C-c g") 'counsel-git)
+            (global-set-key (kbd "C-c j") 'counsel-git-grep)
+            (global-set-key (kbd "C-c k") 'counsel-ag)
+            (global-set-key (kbd "C-x l") 'counsel-locate)
+            (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+            (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+            ))
 #+end_src
 
 * Avy
@@ -142,8 +216,17 @@ Brings up some elp
 
 * Line Numbers
 #+begin_src emacs-lisp
-  (when (version<= "26.0.50" emacs-version )
-    (global-display-line-numbers-mode))
+  (column-number-mode)
+
+  ;; Enable line numbers for some modes
+  (dolist (mode '(text-mode-hook
+                  prog-mode-hook
+                  conf-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 1))))
+
+  ;; Override some modes which derive from the above
+  (dolist (mode '(org-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
 
 * org-mode
@@ -167,7 +250,6 @@ Brings up some elp
   ;(setq org-agenda-todo-ignore-scheduled t)
   ;(setq org-agenda-todo-ignore-deadlines t)
   (setq org-agenda-todo-ignore-with-date t)
-  (global-set-key "\C-ca" 'org-agenda)
   (setq org-todo-keywords
         '((sequence "TODO" "WAITING" "PROJECT" "|"  "DELEGATED" "CANCELLED" "DONE")))
   (setq org-highest-priority 65)
@@ -214,6 +296,11 @@ Brings up some elp
   (setq default-tab-width 4)
   (show-paren-mode 1)
 #+end_src
+** Rainbow Delimiters
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
 ** Magit
 #+begin_src emacs-lisp
   (use-package magit
@@ -236,6 +323,19 @@ Brings up some elp
     :ensure t)
   (use-package go-playground
     :ensure t)
+#+end_src
+* emacs-lisp
+#+begin_src emacs-lisp
+  (use-package helpful
+    :ensure t
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . helpful-function)
+    ([remap describe-variable] . helpful-variable)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-key] . helpful-key))
 #+end_src
 * My elisp functions
 ** Journal file functions
