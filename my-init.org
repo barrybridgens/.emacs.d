@@ -4,7 +4,6 @@
 #+begin_src emacs-lisp
   (cd "/home/barry/Dropbox/Documents/org")
 #+end_src
-
 * Interface Tweaks
 #+begin_src emacs-lisp
   (setq inhibit-startup-message t)
@@ -16,6 +15,14 @@
 
   (defvar efs/frame-transparency '(90 . 90))
 
+  (set-face-attribute 'default nil :font "Fira Code Retina")
+
+  ;; Set the fixed pitch face
+  (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina")
+
+  ;; Set the variable pitch face
+  (set-face-attribute 'variable-pitch nil :font "Cantarell" :weight 'regular)
+
   ;; Set up the visible bell
   (setq visible-bell t)
 
@@ -25,7 +32,6 @@
   (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
-
 * Key Bindings
 ** general.el
 #+begin_src emacs-lisp
@@ -87,7 +93,6 @@
   (use-package try
     :ensure t)
 #+end_src
-
 * Which-key
 Brings up some elp
 #+begin_src emacs-lisp
@@ -96,7 +101,6 @@ Brings up some elp
     :config
     (which-key-mode))
 #+end_src
-
 * Swiper
 #+begin_src emacs-lisp
   (use-package ivy-rich
@@ -132,14 +136,12 @@ Brings up some elp
             (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
             ))
 #+end_src
-
 * Avy
 #+begin_src emacs-lisp
   (use-package avy
     :ensure t
     :bind ("M-s" . avy-goto-char))
 #+end_src
-
 * ibuffer
 #+begin_src emacs-lisp
   (defalias 'list-buffers 'ibuffer)
@@ -206,14 +208,12 @@ Brings up some elp
           (global-auto-complete-mode t)
           ))
 #+end_src
-
 * Theme
 #+begin_src emacs-lisp
   (use-package darkburn-theme
     :ensure t
     :config (load-theme 'darkburn t))
 #+end_src
-
 * Line Numbers
 #+begin_src emacs-lisp
   (column-number-mode)
@@ -228,15 +228,22 @@ Brings up some elp
   (dolist (mode '(org-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
-
 * org-mode
 ** General
 #+begin_src emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
-  (add-hook 'org-mode-hook 'turn-on-font-lock) ; not needed when global-font-lock-mode is on
+  ;; (add-hook 'org-mode-hook 'turn-on-font-lock) ; not needed when global-font-lock-mode is on
   (global-set-key "\C-cl" 'org-store-link)
   (global-set-key "\C-ca" 'org-agenda)
   (global-set-key "\C-cb" 'org-iswitchb)
+
+  (setq org-ellipsis " ▾")
+  (set-face-underline 'org-ellipsis nil)
+
+  (setq org-agenda-start-with-log-mode t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+
 
   (setq org-directory "~/Dropbox/Documents/org")
   (setq org-agenda-files (list org-directory))
@@ -247,20 +254,76 @@ Brings up some elp
   (setq org-enforce-todo-dependencies t)
   (setq org-hide-leading-stars t)
   (setq org-startup-indented t)
-  ;(setq org-agenda-todo-ignore-scheduled t)
-  ;(setq org-agenda-todo-ignore-deadlines t)
+                                          ;(setq org-agenda-todo-ignore-scheduled t)
+                                          ;(setq org-agenda-todo-ignore-deadlines t)
   (setq org-agenda-todo-ignore-with-date t)
   (setq org-todo-keywords
-        '((sequence "TODO" "WAITING" "PROJECT" "|"  "DELEGATED" "CANCELLED" "DONE")))
+        '((sequence "TODO" "NEXT" "WAITING" "PROJECT" "|"  "DELEGATED" "CANCELLED" "DONE")))
   (setq org-highest-priority 65)
   (setq org-lowest-priority 69)
   (setq org-default-priority 68)
 #+end_src
+** Fonts
+#+begin_src emacs-lisp
+  (defun bjb/org-font-setup ()
+    ;; Replace list hyphen with dot
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+    ;; Set faces for heading levels
+    (dolist (face '((org-level-1 . 1.2)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.05)
+                    (org-level-5 . 1.0)
+                    (org-level-6 . 1.0)
+                    (org-level-7 . 1.0)
+                    (org-level-8 . 1.0)))
+      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))
+      ;(set-face-attribute (car face) nil :weight 'regular :height (cdr face))
+      )
+
+    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+    (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch))
+
+  (defun bjb/org-mode-setup ()
+    (org-indent-mode)
+    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+    (variable-pitch-mode 1)
+    (visual-line-mode 1))
+
+  (add-hook 'org-mode-hook 'bjb/org-mode-setup)
+
+  (bjb/org-font-setup)  
+
+#+end_src
 ** org-bullets
 #+begin_src emacs-lisp
   (use-package org-bullets
-      :ensure t)
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    :after org
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+end_src
+** visual-fill
+#+begin_src emacs-lisp
+  (defun bjb/org-mode-visual-fill ()
+    (setq visual-fill-column-width 100
+          visual-fill-column-center-text t)
+    (visual-fill-column-mode 1))
+
+  (use-package visual-fill-column
+    :ensure t
+    :hook (org-mode . bjb/org-mode-visual-fill))
 #+end_src
 ** org-roam
 #+begin_src emacs-lisp
@@ -278,7 +341,6 @@ Brings up some elp
                 :map org-mode-map
                 (("C-c n i" . org-roam-insert))))
 #+end_src
-
 * Projectile
 #+begin_src emacs-lisp
   (use-package projectile
@@ -297,7 +359,6 @@ Brings up some elp
   ;;   :ensure t
   ;;   :config (counsel-projectile-mode))
 #+end_src
-
 * Programming
 ** General
 #+begin_src emacs-lisp
@@ -414,4 +475,3 @@ Brings up some elp
     (insert "- [ ] Check *habit* performance and comment about it below\n")
     (insert "*** Notable things that happened this week\n"))
 #+end_src
-
