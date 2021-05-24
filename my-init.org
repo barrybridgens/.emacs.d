@@ -228,6 +228,15 @@ Brings up some elp
   (dolist (mode '(org-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
+* File Management
+** Dired
+#+begin_src emacs-lisp
+  (use-package dired
+    :ensure nil
+    :commands (dired dired-jump)
+    :bind (("C-x C-j" . dired-jump))
+    :custom ((dired-listing-switches "-agho --group-directories-first")))
+#+end_src
 * org-mode
 ** General
 #+begin_src emacs-lisp
@@ -265,45 +274,46 @@ Brings up some elp
 #+end_src
 ** Fonts
 #+begin_src emacs-lisp
-  (defun bjb/org-font-setup ()
-    ;; Replace list hyphen with dot
-    (font-lock-add-keywords 'org-mode
-                            '(("^ *\\([-]\\) "
-                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+    (defun bjb/org-font-setup ()
+      ;; Replace list hyphen with dot
+      (font-lock-add-keywords 'org-mode
+                              '(("^ *\\([-]\\) "
+                                 (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-    ;; Set faces for heading levels
-    (dolist (face '((org-level-1 . 1.2)
-                    (org-level-2 . 1.1)
-                    (org-level-3 . 1.05)
-                    (org-level-4 . 1.05)
-                    (org-level-5 . 1.0)
-                    (org-level-6 . 1.0)
-                    (org-level-7 . 1.0)
-                    (org-level-8 . 1.0)))
-      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))
-      ;(set-face-attribute (car face) nil :weight 'regular :height (cdr face))
-      )
+      ;; Set faces for heading levels
+      (dolist (face '((org-level-1 . 1.2)
+                      (org-level-2 . 1.1)
+                      (org-level-3 . 1.05)
+                      (org-level-4 . 1.05)
+                      (org-level-5 . 1.0)
+                      (org-level-6 . 1.0)
+                      (org-level-7 . 1.0)
+                      (org-level-8 . 1.0)))
+        (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))
+        ;(set-face-attribute (car face) nil :weight 'regular :height (cdr face))
+        )
 
-    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-    (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
-    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch))
+      ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+      (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+      (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+      (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+      (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+      (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+      (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+      (set-face-attribute 'org-document-title nil :inherit 'fixed-pitch))
 
-  (defun bjb/org-mode-setup ()
-    (org-indent-mode)
-    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
-    (variable-pitch-mode 1)
-    (visual-line-mode 1))
+    (defun bjb/org-mode-setup ()
+      (org-indent-mode)
+      (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+      (variable-pitch-mode 1)
+      (visual-line-mode 1))
 
-  (add-hook 'org-mode-hook 'bjb/org-mode-setup)
+    (add-hook 'org-mode-hook 'bjb/org-mode-setup)
 
-  (bjb/org-font-setup)  
+    (bjb/org-font-setup)  
 
 #+end_src
 ** org-bullets
@@ -314,7 +324,7 @@ Brings up some elp
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
-** visual-fill
+** xvisual-fill
 #+begin_src emacs-lisp
   (defun bjb/org-mode-visual-fill ()
     (setq visual-fill-column-width 100
@@ -365,6 +375,38 @@ Brings up some elp
   (setq default-tab-width 4)
   (show-paren-mode 1)
 #+end_src
+** Langauges
+*** LSP Mode
+#+begin_src emacs-lisp
+  (defun bjb/lsp-mode-setup ()
+    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+    (lsp-headerline-breadcrumb-mode))
+
+  (use-package lsp-mode
+    :ensure t
+    :commands (lsp lsp-deferred)
+    :hook (lsp-mode . bjb/lsp-mode-setup)
+    :init
+    (setq lsp-keymap-prefix "C-c q")  ;; Or 'C-l', 's-l'
+    :config
+    (lsp-enable-which-key-integration t))
+#+end_src
+** Terminals
+*** term
+#+begin_src emacs-lisp
+  (use-package term
+    :ensure t
+    :config
+    (setq explicit-shell-file-name "bash") ;; Change this to zsh, etc
+    ;;(setq explicit-zsh-args '())         ;; Use 'explicit-<shell>-args for shell-specific args
+
+    ;; Match the default Bash shell prompt.  Update this if you have a custom prompt
+    (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
+
+  (use-package eterm-256color
+    :ensure t
+    :hook (term-mode . eterm-256color-mode))
+#+end_src
 ** Rainbow Delimiters
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
@@ -381,6 +423,8 @@ Brings up some elp
 #+end_src
 ** Slime
 #+begin_src emacs-lisp
+  (load (expand-file-name "~/quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program "sbcl")
   (global-set-key "\C-cs" 'slime-selector)
 #+end_src
 ** Clojure
