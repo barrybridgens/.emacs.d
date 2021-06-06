@@ -412,15 +412,22 @@ Brings up some elp
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
+** exec-path-from-shell
+#+begin_src emacs-lisp
+    (use-package exec-path-from-shell
+      :ensure t)
+#+end_src
 ** Magit
 #+begin_src emacs-lisp
-  (use-package magit
-    :ensure t)
+    (use-package magit
+      :ensure t)
 
-  (global-set-key (kbd "C-x g") 'magit-status)
+    (global-set-key (kbd "C-x g") 'magit-status)
 
-  ;; (setq auth-sources '("~/.authinfo"))
-(setq github.user "barrybridgens")
+    ;; (setq auth-sources '("~/.authinfo"))
+  (setq github.user "barrybridgens")
+(exec-path-from-shell-copy-env "SSH_AGENT_PID")
+(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
 #+end_src
 ** Slime
 #+begin_src emacs-lisp
