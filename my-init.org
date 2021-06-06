@@ -420,6 +420,7 @@ Brings up some elp
   (global-set-key (kbd "C-x g") 'magit-status)
 
   ;; (setq auth-sources '("~/.authinfo"))
+(setq github.user "barrybridgens")
 #+end_src
 ** Slime
 #+begin_src emacs-lisp
@@ -465,8 +466,8 @@ Brings up some elp
       (insert (format-time-string "%B "))
       (insert (format-time-string "%Y\n"))
       (insert "*** Habits [/]\n")
-      (insert "- [ ] Morning Pills\n")
-      (insert "- [ ] Evening Pills\n")
+      ;;(insert "- [ ] Morning Pills\n")
+      ;;(insert "- [ ] Evening Pills\n")
       (insert "- [ ] Exercise\n")
       (insert "- [ ] Guitar\n")
       (insert "- [ ] Learning\n")
@@ -488,8 +489,8 @@ Brings up some elp
         (insert (format-time-string "%B " tomorrow))
         (insert (format-time-string "%Y\n" tomorrow)))
       (insert "*** Habits [/]\n")
-      (insert "- [ ] Morning Pills\n")
-      (insert "- [ ] Evening Pills\n")
+      ;;(insert "- [ ] Morning Pills\n")
+      ;;(insert "- [ ] Evening Pills\n")
       (insert "- [ ] Exercise\n")
       (insert "- [ ] Guitar\n")
       (insert "- [ ] Learning\n")
