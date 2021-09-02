@@ -409,8 +409,8 @@ Brings up some elp
 #+end_src
 ** Rainbow Delimiters
 #+begin_src emacs-lisp
-  (use-package rainbow-delimiters
-    :hook (prog-mode . rainbow-delimiters-mode))
+;;  (use-package rainbow-delimiters
+;;    :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 ** exec-path-from-shell
 #+begin_src emacs-lisp
@@ -526,4 +526,23 @@ Brings up some elp
     (insert "- [ ] Review tasks in *agenda view* for next week\n")
     (insert "- [ ] Check *habit* performance and comment about it below\n")
     (insert "*** Notable things that happened this week\n"))
+#+end_src
+
+** Table functions
+#+begin_src emacs-lisp
+  (defun bjb-table-new-row-above ()
+    (interactive)
+    (org-shiftmetadown)
+    (org-table-insert-hline))
+  
+  (defun bjb-media-table-new-entry ()
+    (interactive)
+    (bjb-table-new-row-above)
+    (beginning-of-line)
+    (forward-char 2)
+    (insert (format-time-string "%e "))
+    (insert (format-time-string "%B "))
+    (insert (format-time-string "%Y"))
+    (execute-kbd-macro [?\t]))
+  
 #+end_src
