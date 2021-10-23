@@ -18,10 +18,10 @@
   (set-face-attribute 'default nil :font "Fira Code Retina")
 
   ;; Set the fixed pitch face
-  (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina")
+  (set-face-attribute 'fixed-pitch nil :family "Fira Code Retina" :height 1.0)
 
   ;; Set the variable pitch face
-  (set-face-attribute 'variable-pitch nil :font "Cantarell" :weight 'regular)
+  (set-face-attribute 'variable-pitch nil :family "Cantarell" :weight 'regular :height 1.0)
 
   ;; Set up the visible bell
   (setq visible-bell t)
@@ -289,8 +289,8 @@ Brings up some elp
                       (org-level-6 . 1.0)
                       (org-level-7 . 1.0)
                       (org-level-8 . 1.0)))
-        (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))
-        ;(set-face-attribute (car face) nil :weight 'regular :height (cdr face))
+        ; (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))
+        (set-face-attribute (car face) nil :weight 'regular :height (cdr face))
         )
 
       ;; Ensure that anything that should be fixed-pitch in Org files appears that way
@@ -327,7 +327,7 @@ Brings up some elp
 ** xvisual-fill
 #+begin_src emacs-lisp
   (defun bjb/org-mode-visual-fill ()
-    (setq visual-fill-column-width 100
+    (setq visual-fill-column-width 120
           visual-fill-column-center-text t)
     (visual-fill-column-mode 1))
 
