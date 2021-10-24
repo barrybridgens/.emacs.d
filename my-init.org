@@ -461,6 +461,16 @@ Brings up some elp
     ([remap describe-key] . helpful-key))
 #+end_src
 * My elisp functions
+** General functions
+#+begin_src emacs-lisp
+(defun bjb-go-dot-emacs-d ()
+  (interactive)
+  (cd "/home/barry/.emacs.d"))
+
+(defun bjb-go-org ()
+  (interactive)
+  (cd "/home/barry/Dropbox/Documents/org"))
+#+end_src
 ** Journal file functions
 #+begin_src emacs-lisp
     (defun bjb-journal-new-entry ()
