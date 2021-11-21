@@ -21,7 +21,7 @@
   (set-face-attribute 'fixed-pitch nil :family "Fira Code Retina" :height 1.0)
 
   ;; Set the variable pitch face
-  (set-face-attribute 'variable-pitch nil :family "Cantarell" :weight 'regular :height 1.0)
+  (set-face-attribute 'variable-pitch nil :family "Deja Vu Sans" :weight 'regular :height 1.0)
 
   ;; Set up the visible bell
   (setq visible-bell t)
@@ -255,7 +255,16 @@ Brings up some elp
 
 
   (setq org-directory "~/Dropbox/Documents/org")
-  (setq org-agenda-files (list org-directory))
+  (setq org-roam-directory "~/Dropbox/Documents/org-roam")
+  (setq org-agenda-files (list org-directory org-roam-directory))
+
+  ;(setq org-agenda-files (apply 'append
+  ;                              (mapcar
+  ;                               (lambda (directory)
+  ;                                 (directory-files-recursively
+  ;                                  directory org-agenda-file-regexp))
+  ;                               '("~/Dropbox/Documents/org" "~/Dropbox/Documents/org-roam" "~/Dropbox/Documents/org-old"))))
+
   (setq org-agenda-dim-blocked-tasks 'invisible)
   (setq org-agenda-todo-ignore-deadlines (quote far))
   (setq org-deadline-warning-days 2)
