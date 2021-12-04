@@ -32,62 +32,6 @@
   (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
-* Key Bindings
-** general.el
-#+begin_src emacs-lisp
-  ;;(use-package general
-  ;;  :ensure t
-  ;;  :config
-  ;;  (general-create-definer bjb/leader-keys
-  ;;    :keymaps '(normal insert visual emacs)
-  ;;    :prefix "SPC"
-  ;;    :global-prefix "C-SPC")
-
-  ;;  (bjb/leader-keys
-  ;;  "t"  '(:ignore t :which-key "toggles")
-  ;;  "tt" '(counsel-load-theme :which-key "choose theme")))
-#+end_src
-** Evil
-#+begin_src emacs-lisp
-  ;;(use-package evil
-  ;;  :ensure t
-  ;;  :init
-  ;;  (setq evil-want-integration t)
-  ;;  (setq evil-want-keybinding nil)
-  ;;  (setq evil-want-C-u-scroll t)
-  ;;  (setq evil-want-C-i-jump nil)
-  ;;  :config
-  ;;  (evil-mode 1)
-  ;;  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  ;;  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-    ;; Use visual line motions even outside of visual-line-mode buffers
-  ;;  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  ;;  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  ;;  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  ;;  (evil-set-initial-state 'dashboard-mode 'normal))
-
-  ;;(use-package evil-collection
-  ;;  :ensure t
-  ;;  :after evil
-  ;;  :config
-  ;;  (evil-collection-init))
-#+end_src
-** Hydra
-#+begin_src emacs-lisp
-  ;;(use-package hydra
-  ;;  :ensure t)
-
-  ;;(defhydra hydra-text-scale (:timeout 4)
-  ;;  "scale text"
-  ;;  ("j" text-scale-increase "in")
-  ;;  ("k" text-scale-decrease "out")
-  ;;  ("f" nil "finished" :exit t))
-
-  ;;(bjb/leader-keys
-  ;;  "ts" '(hydra-text-scale/body :which-key "scale text"))
-#+end_src
 * Try
 #+begin_src emacs-lisp
   (use-package try
@@ -337,11 +281,13 @@ Brings up some elp
 #+end_src
 ** org-bullets
 #+begin_src emacs-lisp
-  (use-package org-bullets
-    :after org
-    :hook (org-mode . org-bullets-mode)
-    :custom
-    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+    (use-package org-bullets
+      :after org
+      :hook (org-mode . org-bullets-mode)
+      :custom
+      (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")
+      ;;; (org-bullets-bullet-list '(" " " " " " " " " " " " " ")
+                               ))
 #+end_src
 ** xvisual-fill
 #+begin_src emacs-lisp
@@ -569,15 +515,87 @@ Brings up some elp
     (interactive)
     (org-shiftmetadown)
     (org-table-insert-hline))
-  
+
   (defun bjb-media-table-new-entry ()
     (interactive)
     (bjb-table-new-row-above)
     (beginning-of-line)
     (forward-char 2)
     (insert (format-time-string "%e "))
-    (insert (format-time-string "%B "))
-    (insert (format-time-string "%Y"))
+    (insert (format-time-string "%B "))    (insert (format-time-string "%Y"))
     (execute-kbd-macro [?\t]))
-  
+
+  (defun bjb-table-copy-up ()
+    "Copy the contents of the cell below into the current"
+    (interactive)
+    (next-line 2)
+    (copy-region-as-kill (point)
+                         (progn
+                           (search-forward "|" nil nil)
+                           (forward-char -1)
+                           (point)))
+    (next-line -2)
+    (yank)
+    (execute-kbd-macro [?\t]))
+
+#+end_src
+* Key Bindings
+** general.el
+#+begin_src emacs-lisp
+  ;;(use-package general
+  ;;  :ensure t
+  ;;  :config
+  ;;  (general-create-definer bjb/leader-keys
+  ;;    :keymaps '(normal insert visual emacs)
+  ;;    :prefix "SPC"
+  ;;    :global-prefix "C-SPC")
+
+  ;;  (bjb/leader-keys
+  ;;  "t"  '(:ignore t :which-key "toggles")
+  ;;  "tt" '(counsel-load-theme :which-key "choose theme")))
+#+end_src
+** Evil
+#+begin_src emacs-lisp
+  ;;(use-package evil
+  ;;  :ensure t
+  ;;  :init
+  ;;  (setq evil-want-integration t)
+  ;;  (setq evil-want-keybinding nil)
+  ;;  (setq evil-want-C-u-scroll t)
+  ;;  (setq evil-want-C-i-jump nil)
+  ;;  :config
+  ;;  (evil-mode 1)
+  ;;  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  ;;  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+    ;; Use visual line motions even outside of visual-line-mode buffers
+  ;;  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  ;;  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  ;;  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  ;;  (evil-set-initial-state 'dashboard-mode 'normal))
+
+  ;;(use-package evil-collection
+  ;;  :ensure t
+  ;;  :after evil
+  ;;  :config
+  ;;  (evil-collection-init))
+#+end_src
+** Hydra
+#+begin_src emacs-lisp
+  ;;(use-package hydra
+  ;;  :ensure t)
+
+  ;;(defhydra hydra-text-scale (:timeout 4)
+  ;;  "scale text"
+  ;;  ("j" text-scale-increase "in")
+  ;;  ("k" text-scale-decrease "out")
+  ;;  ("f" nil "finished" :exit t))
+
+  ;;(bjb/leader-keys
+  ;;  "ts" '(hydra-text-scale/body :which-key "scale text"))
+#+end_src
+** My Key Bindings
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c c") 'bjb-table-copy-up)
 #+end_src
