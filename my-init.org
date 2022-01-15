@@ -192,7 +192,9 @@ Brings up some elp
 
   (setq org-ellipsis " ▾")
   (set-face-underline 'org-ellipsis nil)
-
+#+end_src
+** org-agenda
+#+begin_src emacs-lisp
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
@@ -220,10 +222,27 @@ Brings up some elp
                                           ;(setq org-agenda-todo-ignore-deadlines t)
   (setq org-agenda-todo-ignore-with-date t)
   (setq org-todo-keywords
-        '((sequence "TODO" "NEXT" "WAITING" "PROJECT" "|"  "DELEGATED" "CANCELLED" "DONE")))
+        '((sequence "TODO" "INPROG-TODO" "NEXT" "WAITING" "PROJECT"
+                    "|"
+                    "DONE" "CANCELLED")))
+  (setq org-todo-keyword-faces '(("TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
+                                 ("INPROG-TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
+                                 ("NEXT" nil :foreground "coral1" :inherit fixed-pitch :weight medium)
+                                 ("WAITINGY" nil :foreground "plum3" :inherit fixed-pitch :weight medium)
+                                 ("PROJECT" nil :foreground "aquamarine3" :inherit fixed-pitch :weight medium)
+
+                                 ("DONE" nil :foreground "LawnGreen" :inherit fixed-pitch :weight medium)
+                                 ("CANCELLED" nil :foreground "dark red" :inherit fixed-pitch :weight medium)))
   (setq org-highest-priority 65)
   (setq org-lowest-priority 69)
   (setq org-default-priority 68)
+  (setq org-priority-faces
+  '((65 nil :inherit fixed-pitch :foreground "red2" :weight medium)
+    (66 . "Gold1")
+    (67 . "Goldenrod2")
+    (68 . "PaleTurquoise3")
+    (69 . "DarkSlateGray4")
+    (70 . "PaleTurquoise4")))
 #+end_src
 ** Fonts
 #+begin_src emacs-lisp
@@ -613,4 +632,12 @@ Brings up some elp
 ** My Key Bindings
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c c") 'bjb-table-copy-up)
+#+end_src
+* Register setup
+#+begin_src emacs-lisp
+  (set-register ?j (cons 'file (concat org-directory "/journal2022.org")))
+  (set-register ?n (cons 'file (concat org-directory "/notes.org")))
+  (set-register ?t (cons 'file (concat org-directory "/todos.org")))
+  (set-register ?p (cons 'file (concat org-directory "/photography.org")))
+  (set-register ?i (cons 'file "~/.emacs.d/my-init.org"))
 #+end_src
