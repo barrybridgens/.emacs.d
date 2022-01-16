@@ -639,5 +639,6 @@ Brings up some elp
   (set-register ?n (cons 'file (concat org-directory "/notes.org")))
   (set-register ?t (cons 'file (concat org-directory "/todos.org")))
   (set-register ?p (cons 'file (concat org-directory "/photography.org")))
+  (set-register ?m (cons 'file (concat org-roam-directory "/20220116113541-master_index.org")))
   (set-register ?i (cons 'file "~/.emacs.d/my-init.org"))
 #+end_src
