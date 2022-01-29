@@ -334,7 +334,7 @@ Brings up some elp
         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
         :unnarrowed t)
        ("p" "Project" plain
-        "\n\n* Description / Overview\n\n %?\n\n* Tasks\n** TODO Review ${title} project\n\n* Notes\n\n\n\n* Research\n\n\n"
+        (file "/home/barry/Dropbox/Documents/org-roam/templates/project_template.org")
         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
         :unnarrowed t)))
     :bind (("C-c n l" . org-roam-buffer-toggle)
