@@ -1,3 +1,4 @@
+
 #+STARTUP: overview
 
 * Startup Directory
@@ -642,10 +643,10 @@ Brings up some elp
 #+end_src
 * Register setup
 #+begin_src emacs-lisp
-  (set-register ?j (cons 'file (concat org-directory "/journal2022.org")))
-  (set-register ?n (cons 'file (concat org-directory "/notes.org")))
-  (set-register ?t (cons 'file (concat org-directory "/todos.org")))
-  (set-register ?p (cons 'file (concat org-directory "/photography.org")))
+  (set-register ?j (cons 'file (concat org-roam-directory "/_journal_2022.org")))
+  (set-register ?n (cons 'file (concat org-roam-directory "/_quick_notes.org")))
+  (set-register ?t (cons 'file (concat org-roam-directory "/_todos.org")))
+  (set-register ?p (cons 'file (concat org-roam-directory "/_photography.org")))
   (set-register ?m (cons 'file (concat org-roam-directory "/20220116113541-master_index.org")))
   (set-register ?i (cons 'file "~/.emacs.d/my-init.org"))
 #+end_src
