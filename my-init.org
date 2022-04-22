@@ -471,7 +471,7 @@ Brings up some elp
         (defun bjb-journal-new-entry ()
           "Add a new journal entry at the end of the journal file"
           (interactive)
-          (switch-to-buffer "journal2022.org")
+          (switch-to-buffer "_journal_2022.org")
           (goto-char (point-max))
           (insert (format-time-string "\n** %A "))
           (insert (format-time-string "%e "))
@@ -488,7 +488,7 @@ Brings up some elp
         (defun bjb-journal-new-entry-tomorrow ()
           "Add a new journal entry for tomorrow at the end of the journal file"
           (interactive)
-          (switch-to-buffer "journal2022.org")
+          (switch-to-buffer "_journal_2022.org")
           (goto-char (point-max))
           (let ((tomorrow (time-add (current-time) (* 60 60 24))))
             (insert (format-time-string "\n** %A " tomorrow))
@@ -507,7 +507,7 @@ Brings up some elp
     (defun bjb-new-weekly-review ()
         "Add a new weekly review entry at the end of the journal file"
       (interactive)
-      (switch-to-buffer "journal2022.org")
+      (switch-to-buffer "_journal_2022.org")
       (goto-char (point-max))
       (insert (format-time-string "\n** Week %V "))
       (insert (format-time-string "%G - Weekly Review\n"))
