@@ -301,13 +301,14 @@ Brings up some elp
 #+end_src
 ** org-bullets
 #+begin_src emacs-lisp
-    (use-package org-bullets
-      :after org
-      :hook (org-mode . org-bullets-mode)
-      :custom
-      (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")
-      ;;; (org-bullets-bullet-list '(" " " " " " " " " " " " " ")
-                               ))
+  (use-package org-bullets
+    :ensure t
+    :after org
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")
+    ;;; (org-bullets-bullet-list '(" " " " " " " " " " " " " ")
+                             ))
 #+end_src
 ** xvisual-fill
 #+begin_src emacs-lisp
@@ -345,6 +346,38 @@ Brings up some elp
            ("C-M-i" . completion-at-point))
     :config
     (org-roam-setup))
+  (use-package org-roam-ui
+    :ensure t)
+#+end_src
+** calfw
+#+begin_src emacs-lisp
+  (use-package calfw
+    :ensure t)
+  (use-package calfw-cal
+    :ensure t)
+  (use-package calfw-org
+    :ensure t
+    :bind
+    ("M-<f3>" . cfw:open-org-calendar)
+    :config
+    ;; hotfix: incorrect time range display
+    ;; source: https://github.com/zemaye/emacs-calfw/commit/3d17649c545423d919fd3bb9de2efe6dfff210fe
+    (defun cfw:org-get-timerange (text)
+      "Return a range object (begin end text). If TEXT does not have a range, return nil."
+      (let* ((dotime (cfw:org-tp text 'dotime)))
+        (and (stringp dotime) (string-match org-ts-regexp dotime)
+             (let* ((matches  (s-match-strings-all org-ts-regexp dotime))
+                    (start-date (nth 1 (car matches)))
+                    (end-date (nth 1 (nth 1 matches)))
+                    (extra (cfw:org-tp text 'extra)))
+               (if (string-match "(\\([0-9]+\\)/\\([0-9]+\\)): " extra)
+                   ( list( calendar-gregorian-from-absolute
+                           (time-to-days
+                            (org-read-date nil t start-date))
+                           )
+                         (calendar-gregorian-from-absolute
+                          (time-to-days
+                           (org-read-date nil t end-date))) text)))))))
 #+end_src
 * Projectile
 #+begin_src emacs-lisp
