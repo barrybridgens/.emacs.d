@@ -5,6 +5,11 @@
 #+begin_src emacs-lisp
   (cd "/home/barry/Dropbox/Documents/org")
 #+end_src
+* org-protocol
+#+begin_src emacs-lisp
+  (server-start)
+  (require 'org-protocol)
+#+end_src
 * Interface Tweaks
 #+begin_src emacs-lisp
   (setq inhibit-startup-message t)
@@ -298,6 +303,9 @@ Brings up some elp
 
   (setq org-hide-emphasis-markers t)  
 
+  ;; fontify code in code blocks
+  (setq org-src-fontify-natively t)
+
 #+end_src
 ** org-bullets
 #+begin_src emacs-lisp
@@ -339,6 +347,10 @@ Brings up some elp
         (file "/home/barry/Dropbox/Documents/org-roam/templates/project_template.org")
         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
         :unnarrowed t)))
+    (org-roam-capture-ref-templates '(("l" "web" plain "%i\n%?"
+                                          :target (file+head "%<%Y%m%d>-${slug}.org"
+                                                             "#+title: ${title}")
+                                          :unnarrowed t)))
     :bind (("C-c n l" . org-roam-buffer-toggle)
            ("C-c n f" . org-roam-node-find)
            ("C-c n i" . org-roam-node-insert)
@@ -348,6 +360,7 @@ Brings up some elp
     (org-roam-setup))
   (use-package org-roam-ui
     :ensure t)
+  (require 'org-roam-protocol)
 #+end_src
 ** calfw
 #+begin_src emacs-lisp
@@ -378,6 +391,14 @@ Brings up some elp
                          (calendar-gregorian-from-absolute
                           (time-to-days
                            (org-read-date nil t end-date))) text)))))))
+#+end_src
+** Code blocks
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)
+     (R . t)))
 #+end_src
 * Projectile
 #+begin_src emacs-lisp
@@ -501,87 +522,87 @@ Brings up some elp
 #+end_src
 ** Journal file functions
 #+begin_src emacs-lisp
-        (defun bjb-journal-new-entry ()
-          "Add a new journal entry at the end of the journal file"
-          (interactive)
-          (switch-to-buffer "_journal_2022.org")
-          (goto-char (point-max))
-          (insert (format-time-string "\n** %A "))
-          (insert (format-time-string "%e "))
-          (insert (format-time-string "%B "))
-          (insert (format-time-string "%Y\n"))
-          (insert "*** Working from home - delete if not!\n")
-          (insert "*** In the house\n")
-          (insert "*** Out and about\n")
-          (insert "*** Food\n")
-          (insert "*** Physical\n")
-          (insert "*** Mental\n")
-          (insert "*** Other\n"))
+      (defun bjb-journal-new-entry ()
+        "Add a new journal entry at the end of the journal file"
+        (interactive)
+        (switch-to-buffer "_journal_2022.org")
+        (goto-char (point-max))
+        (insert (format-time-string "\n** %A "))
+        (insert (format-time-string "%e "))
+        (insert (format-time-string "%B "))
+        (insert (format-time-string "%Y\n"))
+        (insert "*** Working from home - delete if not!\n")
+        (insert "*** In the house\n")
+        (insert "*** Out and about\n")
+        (insert "*** Food\n")
+        (insert "*** Physical\n")
+        (insert "*** Mental\n")
+        (insert "*** Other\n"))
 
-        (defun bjb-journal-new-entry-tomorrow ()
-          "Add a new journal entry for tomorrow at the end of the journal file"
-          (interactive)
-          (switch-to-buffer "_journal_2022.org")
-          (goto-char (point-max))
-          (let ((tomorrow (time-add (current-time) (* 60 60 24))))
-            (insert (format-time-string "\n** %A " tomorrow))
-            (insert (format-time-string "%e " tomorrow))
-            (insert (format-time-string "%B " tomorrow))
-            (insert (format-time-string "%Y\n" tomorrow)))
-          (insert "*** Working from home - delete if not!\n")
-          (insert "*** In the house\n")
-          (insert "*** Out and about\n")
-          (insert "*** Food\n")
-          (insert "*** Physical\n")
-          (insert "*** Mental\n")
-          (insert "*** Other\n"))
+      (defun bjb-journal-new-entry-tomorrow ()
+        "Add a new journal entry for tomorrow at the end of the journal file"
+        (interactive)
+        (switch-to-buffer "_journal_2022.org")
+        (goto-char (point-max))
+        (let ((tomorrow (time-add (current-time) (* 60 60 24))))
+          (insert (format-time-string "\n** %A " tomorrow))
+          (insert (format-time-string "%e " tomorrow))
+          (insert (format-time-string "%B " tomorrow))
+          (insert (format-time-string "%Y\n" tomorrow)))
+        (insert "*** Working from home - delete if not!\n")
+        (insert "*** In the house\n")
+        (insert "*** Out and about\n")
+        (insert "*** Food\n")
+        (insert "*** Physical\n")
+        (insert "*** Mental\n")
+        (insert "*** Other\n"))
 
 
-    (defun bjb-new-weekly-review ()
-        "Add a new weekly review entry at the end of the journal file"
-      (interactive)
-      (switch-to-buffer "_journal_2022.org")
-      (goto-char (point-max))
-      (insert (format-time-string "\n** Week %V "))
-      (insert (format-time-string "%G - Weekly Review\n"))
-      (insert "*** Checklist [/]\n")
-      (insert "- [ ] Process all items in *inbox.org*\n")
-      (insert "- [ ] Process all items in Evernote InBox\n")
-      (insert "- [ ] Process all items in my physical inbox\n")
-      (insert "- [ ] Check tasks in *todo.org* and add date and/or priority where appropriate\n")
-      (insert "- [ ] Check overdue items in *agenda view*\n")
-      (insert "- [ ] Check the HOME and WORK calendars for next week to see if there is anything that needs to be prepared for\n")
-      (insert "- [ ] Check email inbox and folders - make sure everything is in the correct place (Make sure to check _TEMP, _ACTIONS and _HOLD)\n")
-      (insert "- [ ] Review tasks in *agenda view* for next week\n")
-      (insert "- [ ] Read back last week's notes in org-mode and my paper journal\n")
-      (insert "\n")
-      (insert "*** Habit Table\n")
-      (insert "|-----------+---+---+---+---+---+---|\n")
-      (insert "| Day       | E | G | S | P | L | J |\n")
-      (insert "|-----------+---+---+---+---+---+---|\n")
-      (insert "| Monday    |   |   |   |   |   |   |\n")
-      (insert "|-----------+---+---+---+---+---+---|\n")
-      (insert "| Tuesday   |   |   |   |   |   |   |\n")
-      (insert "|-----------+---+---+---+---+---+---|\n")
-      (insert "| Wednesday |   |   |   |   |   |   |\n")
-      (insert "|-----------+---+---+---+---+---+---|\n")
-      (insert "| Thursday  |   |   |   |   |   |   |\n")
-      (insert "|-----------+---+---+---+---+---+---|\n")
-      (insert "| Friday    |   |   |   |   |   |   |\n")
-      (insert "|-----------+---+---+---+---+---+---|\n")
-      (insert "| Saturday  |   |   |   |   |   |   |\n")
-      (insert "|-----------+---+---+---+---+---+---|\n")
-      (insert "| Sunday    |   |   |   |   |   |   |\n")
-      (insert "|-----------+---+---+---+---+---+---|\n")
-      (insert "\n")
-      (insert "E = Exercise\n")
-      (insert "G = Guitar Playing\n")
-      (insert "S = Sketching\n")
-      (insert "P = Take a photograph\n")
-      (insert "L = Learning\n")
-      (insert "J = Journaling\n")
-      (insert "\n")
-      (insert "*** Notable things that happened this week\n"))
+  (defun bjb-new-weekly-review ()
+      "Add a new weekly review entry at the end of the journal file"
+    (interactive)
+    (switch-to-buffer "_journal_2022.org")
+    (goto-char (point-max))
+    (insert (format-time-string "\n** Week %V "))
+    (insert (format-time-string "%G - Weekly Review\n"))
+    (insert "*** Checklist [/]\n")
+    (insert "- [ ] Process all items in *inbox.org*\n")
+    (insert "- [ ] Process all items in Evernote InBox\n")
+    (insert "- [ ] Process all items in my physical inbox\n")
+    (insert "- [ ] Check tasks in *todo.org* and add date and/or priority where appropriate\n")
+    (insert "- [ ] Check overdue items in *agenda view*\n")
+    (insert "- [ ] Check the HOME and WORK calendars for next week to see if there is anything that needs to be prepared for\n")
+    (insert "- [ ] Check email inbox and folders - make sure everything is in the correct place (Make sure to check _TEMP, _ACTIONS and _HOLD)\n")
+    (insert "- [ ] Review tasks in *agenda view* for next week\n")
+    (insert "- [ ] Read back last week's notes in org-mode and my paper journal\n")
+    (insert "\n")
+    (insert "*** Habit Table\n")
+    (insert "|-----------+---+---+---+---+---+---|\n")
+    (insert "| Day       | E | G | S | P | L | J |\n")
+    (insert "|-----------+---+---+---+---+---+---|\n")
+    (insert "| Monday    |   |   |   |   |   |   |\n")
+    (insert "|-----------+---+---+---+---+---+---|\n")
+    (insert "| Tuesday   |   |   |   |   |   |   |\n")
+    (insert "|-----------+---+---+---+---+---+---|\n")
+    (insert "| Wednesday |   |   |   |   |   |   |\n")
+    (insert "|-----------+---+---+---+---+---+---|\n")
+    (insert "| Thursday  |   |   |   |   |   |   |\n")
+    (insert "|-----------+---+---+---+---+---+---|\n")
+    (insert "| Friday    |   |   |   |   |   |   |\n")
+    (insert "|-----------+---+---+---+---+---+---|\n")
+    (insert "| Saturday  |   |   |   |   |   |   |\n")
+    (insert "|-----------+---+---+---+---+---+---|\n")
+    (insert "| Sunday    |   |   |   |   |   |   |\n")
+    (insert "|-----------+---+---+---+---+---+---|\n")
+    (insert "\n")
+    (insert "E = Exercise\n")
+    (insert "G = Guitar Playing\n")
+    (insert "S = Sketching\n")
+    (insert "P = Take a photograph\n")
+    (insert "L = Learning\n")
+    (insert "J = Journaling\n")
+    (insert "\n")
+    (insert "*** Notable things that happened this week\n"))
 #+end_src
 
 ** Table functions
