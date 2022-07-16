@@ -575,6 +575,7 @@ Brings up some elp
     (insert "- [ ] Check email inbox and folders - make sure everything is in the correct place (Make sure to check _TEMP, _ACTIONS and _HOLD)\n")
     (insert "- [ ] Review tasks in *agenda view* for next week\n")
     (insert "- [ ] Read back last week's notes in org-mode and my paper journal\n")
+    (insert "- [ ] Review / update my goals\n")
     (insert "\n")
     (insert "*** Habit Table\n")
     (insert "|-----------+---+---+---+---+---+---|\n")
