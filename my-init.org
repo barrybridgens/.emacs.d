@@ -249,6 +249,8 @@ Brings up some elp
     (68 . "PaleTurquoise3")
     (69 . "DarkSlateGray4")
     (70 . "PaleTurquoise4")))
+  (add-to-list 'org-modules 'org-habit t)
+  (setq org-treat-insert-todo-heading-as-state-change t)
 #+end_src
 ** Fonts
 #+begin_src emacs-lisp
