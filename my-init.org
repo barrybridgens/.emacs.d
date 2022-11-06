@@ -201,82 +201,85 @@ Brings up some elp
 #+end_src
 ** org-agenda
 #+begin_src emacs-lisp
-        (setq org-agenda-start-with-log-mode t)
-        (setq org-log-done 'time)
-        (setq org-log-into-drawer t)
+          (setq org-agenda-start-with-log-mode t)
+          (setq org-log-done 'time)
+          (setq org-log-into-drawer t)
 
 
-        (setq org-directory "~/Dropbox/Documents/org")
-  (setq org-roam-directory "~/Dropbox/Documents/org-roam")
-  (setq org-agenda-files (list org-directory org-roam-directory))
+          (setq org-directory "~/Dropbox/Documents/org")
+    (setq org-roam-directory "~/Dropbox/Documents/org-roam")
+    (setq org-agenda-files (list org-directory org-roam-directory))
 
-        ;(setq org-agenda-files (apply 'append
-        ;                              (mapcar
-        ;                               (lambda (directory)
-        ;                                 (directory-files-recursively
-        ;                                  directory org-agenda-file-regexp))
-        ;                               '("~/Dropbox/Documents/org" "~/Dropbox/Documents/org-roam" "~/Dropbox/Documents/org-old"))))
+          ;(setq org-agenda-files (apply 'append
+          ;                              (mapcar
+          ;                               (lambda (directory)
+          ;                                 (directory-files-recursively
+          ;                                  directory org-agenda-file-regexp))
+          ;                               '("~/Dropbox/Documents/org" "~/Dropbox/Documents/org-roam" "~/Dropbox/Documents/org-old"))))
 
-  (setq org-agenda-dim-blocked-tasks 'invisible)
-  (setq org-agenda-todo-ignore-deadlines (quote far))
-  (setq org-deadline-warning-days 2)
-  (setq org-enforce-todo-checkbox-dependencies t)
-  (setq org-enforce-todo-dependencies t)
-  (setq org-hide-leading-stars t)
-  (setq org-startup-indented t)
-                                                ;(setq org-agenda-todo-ignore-scheduled t)
-                                                ;(setq org-agenda-todo-ignore-deadlines t)
+    (setq org-agenda-dim-blocked-tasks 'invisible)
+    (setq org-agenda-todo-ignore-deadlines (quote far))
+    (setq org-deadline-warning-days 2)
+    (setq org-enforce-todo-checkbox-dependencies t)
+    (setq org-enforce-todo-dependencies t)
+    (setq org-hide-leading-stars t)
+    (setq org-startup-indented t)
+                                                  ;(setq org-agenda-todo-ignore-scheduled t)
+                                                  ;(setq org-agenda-todo-ignore-deadlines t)
 
 
-  (setq org-agenda-show-future-repeats 'next)
+    (setq org-agenda-show-future-repeats 'next)
 
-  (setq org-agenda-custom-commands
-              '(
-                ("n" "Agenda and all TODOs"
-                 ((agenda "")
-                  (alltodo "")))
-                ("b" "Barry"
-                 ((todo "NEXT"
-                        ((org-agenda-overriding-header "Next Tasks")))
-                 (agenda ""
-                         ((org-agenda-block-separator nil)
-                          (org-agenda-span 1)
-                          (org-deadline-warning-days 0)
-                          (org-agenda-overriding-header "\nDaily Agenda")))
-                (agenda ""
-                        ((org-agenda-block-separator nil)
-                         (org-agenda-start-day "+1d")
-                         (org-agenda-span 3)
-                         (org-deadline-warning-days 0)
-                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                         (org-agenda-overriding-header "\nNext 3 Days")))))
-                ))
+    (setq org-agenda-custom-commands
+                '(
+                  ("n" "Agenda and all TODOs"
+                   ((agenda "")
+                    (alltodo "")))
+                  ("b" "Barry"
+                   ((todo "NEXT"
+                          ((org-agenda-overriding-header "Next Tasks")))
+                    (todo "INPROG-TODO"
+                          ((org-agenda-block-separator nil)
+                           (org-agenda-overriding-header "\nIn-progress Tasks")))
+                    (agenda ""
+                           ((org-agenda-block-separator nil)
+                            (org-agenda-span 1)
+                            (org-deadline-warning-days 0)
+                            (org-agenda-overriding-header "\nDaily Agenda")))
+                    (agenda ""
+                          ((org-agenda-block-separator nil)
+                           (org-agenda-start-day "+1d")
+                           (org-agenda-span 3)
+                           (org-deadline-warning-days 0)
+                           (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                           (org-agenda-overriding-header "\nNext 3 Days")))))
+                  ))
 
-        (setq org-agenda-todo-ignore-with-date t)
-        (setq org-todo-keywords
-              '((sequence "TODO" "INPROG-TODO" "NEXT" "WAITING" "PROJECT"
-                          "|"
-                          "DONE" "CANCELLED")))
-        (setq org-todo-keyword-faces '(("TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
-                                       ("INPROG-TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
-                                       ("NEXT" nil :foreground "coral1" :inherit fixed-pitch :weight medium)
-                                       ("WAITINGY" nil :foreground "plum3" :inherit fixed-pitch :weight medium)
-                                       ("PROJECT" nil :foreground "aquamarine3" :inherit fixed-pitch :weight medium)
+          (setq org-agenda-todo-ignore-with-date t)
+          (setq org-todo-keywords
+                '((sequence "TODO" "INPROG-TODO" "NEXT" "WAITING" "PROJECT"
+                            "|"
+                            "DONE" "CANCELLED")))
+          (setq org-todo-keyword-faces '(("TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
+                                         ("INPROG-TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
+                                         ("NEXT" nil :foreground "coral1" :inherit fixed-pitch :weight medium)
+                                         ("WAITINGY" nil :foreground "plum3" :inherit fixed-pitch :weight medium)
+                                         ("PROJECT" nil :foreground "aquamarine3" :inherit fixed-pitch :weight medium)
 
-                                       ("DONE" nil :foreground "LawnGreen" :inherit fixed-pitch :weight medium)
-                                       ("CANCELLED" nil :foreground "dark red" :inherit fixed-pitch :weight medium)))
-        (setq org-highest-priority 65)
-        (setq org-lowest-priority 69)
-        (setq org-default-priority 68)
-        (setq org-priority-faces
-        '((65 nil :inherit fixed-pitch :foreground "red2" :weight medium)
-          (66 . "Gold1")
-          (67 . "Goldenrod2")
-          (68 . "PaleTurquoise3")
-          (69 . "DarkSlateGray4")
-          (70 . "PaleTurquoise4")))
-        (add-to-list 'org-modules 'org-habit t)
-        (setq org-treat-insert-todo-heading-as-state-change t)
+                                         ("DONE" nil :foreground "LawnGreen" :inherit fixed-pitch :weight medium)
+                                         ("CANCELLED" nil :foreground "dark red" :inherit fixed-pitch :weight medium)))
+          (setq org-highest-priority 65)
+          (setq org-lowest-priority 69)
+          (setq org-default-priority 67)
+          (setq org-priority-faces
+          '((65 nil :inherit fixed-pitch :foreground "red2" :weight medium)
+            (66 . "Gold1")
+            (67 . "Goldenrod2")
+            (68 . "PaleTurquoise3")
+            (69 . "DarkSlateGray4")
+            (70 . "PaleTurquoise4")))
+          (add-to-list 'org-modules 'org-habit t)
+          (setq org-treat-insert-todo-heading-as-state-change t)
 #+end_src
 ** Fonts
 #+begin_src emacs-lisp
@@ -420,6 +423,11 @@ Brings up some elp
                           (time-to-days
                            (org-read-date nil t end-date))) text)))))))
 #+end_src
+** org-ql
+#+begin_src emacs-lisp
+  ;(use-package org-ql
+  ;  :ensure t)
+#+end_src
 ** Code blocks
 #+begin_src emacs-lisp
   (org-babel-do-load-languages
@@ -550,40 +558,42 @@ Brings up some elp
 #+end_src
 ** Journal file functions
 #+begin_src emacs-lisp
-      (defun bjb-journal-new-entry ()
-        "Add a new journal entry at the end of the journal file"
-        (interactive)
-        (switch-to-buffer "_journal_2022.org")
-        (goto-char (point-max))
-        (insert (format-time-string "\n** %A "))
-        (insert (format-time-string "%e "))
-        (insert (format-time-string "%B "))
-        (insert (format-time-string "%Y\n"))
-        (insert "*** Working from home - delete if not!\n")
-        (insert "*** In the house\n")
-        (insert "*** Out and about\n")
-        (insert "*** Food\n")
-        (insert "*** Physical\n")
-        (insert "*** Mental\n")
-        (insert "*** Other\n"))
 
-      (defun bjb-journal-new-entry-tomorrow ()
-        "Add a new journal entry for tomorrow at the end of the journal file"
-        (interactive)
-        (switch-to-buffer "_journal_2022.org")
-        (goto-char (point-max))
-        (let ((tomorrow (time-add (current-time) (* 60 60 24))))
-          (insert (format-time-string "\n** %A " tomorrow))
-          (insert (format-time-string "%e " tomorrow))
-          (insert (format-time-string "%B " tomorrow))
-          (insert (format-time-string "%Y\n" tomorrow)))
-        (insert "*** Working from home - delete if not!\n")
-        (insert "*** In the house\n")
-        (insert "*** Out and about\n")
-        (insert "*** Food\n")
-        (insert "*** Physical\n")
-        (insert "*** Mental\n")
-        (insert "*** Other\n"))
+  (defun bjb-journal-new-entry ()
+    "Add a new journal entry at the end of the journal file"
+    (interactive)
+    (switch-to-buffer "_journal_2022.org")
+    (goto-char (point-max))
+    (insert (format-time-string "\n** %A "))
+    (insert (format-time-string "%e "))
+    (insert (format-time-string "%B "))
+    (insert (format-time-string "%Y\n"))
+    (insert "*** Working from home - delete if not!\n")
+    (insert "*** In the house\n")
+    (insert "*** Out and about\n")
+    (insert "*** Food\n")
+    (insert "*** Physical\n")
+    (insert "*** Mental\n")
+    (insert "*** Other\n"))
+
+
+  (defun bjb-journal-new-entry-tomorrow ()
+    "Add a new journal entry for tomorrow at the end of the journal file"
+    (interactive)
+    (switch-to-buffer "_journal_2022.org")
+    (goto-char (point-max))
+    (let ((tomorrow (time-add (current-time) (* 60 60 24))))
+      (insert (format-time-string "\n** %A " tomorrow))
+      (insert (format-time-string "%e " tomorrow))
+      (insert (format-time-string "%B " tomorrow))
+      (insert (format-time-string "%Y\n" tomorrow)))
+    (insert "*** Working from home - delete if not!\n")
+    (insert "*** In the house\n")
+    (insert "*** Out and about\n")
+    (insert "*** Food\n")
+    (insert "*** Physical\n")
+    (insert "*** Mental\n")
+    (insert "*** Other\n"))
 
 
   (defun bjb-new-weekly-review ()
@@ -604,32 +614,6 @@ Brings up some elp
     (insert "- [ ] Review tasks in *agenda view* for next week\n")
     (insert "- [ ] Read back last week's notes in org-mode and my paper journal\n")
     (insert "- [ ] Review / update my goals\n")
-    (insert "\n")
-    (insert "*** Habit Table\n")
-    (insert "|-----------+---+---+---+---+---+---|\n")
-    (insert "| Day       | E | G | S | P | L | J |\n")
-    (insert "|-----------+---+---+---+---+---+---|\n")
-    (insert "| Monday    |   |   |   |   |   |   |\n")
-    (insert "|-----------+---+---+---+---+---+---|\n")
-    (insert "| Tuesday   |   |   |   |   |   |   |\n")
-    (insert "|-----------+---+---+---+---+---+---|\n")
-    (insert "| Wednesday |   |   |   |   |   |   |\n")
-    (insert "|-----------+---+---+---+---+---+---|\n")
-    (insert "| Thursday  |   |   |   |   |   |   |\n")
-    (insert "|-----------+---+---+---+---+---+---|\n")
-    (insert "| Friday    |   |   |   |   |   |   |\n")
-    (insert "|-----------+---+---+---+---+---+---|\n")
-    (insert "| Saturday  |   |   |   |   |   |   |\n")
-    (insert "|-----------+---+---+---+---+---+---|\n")
-    (insert "| Sunday    |   |   |   |   |   |   |\n")
-    (insert "|-----------+---+---+---+---+---+---|\n")
-    (insert "\n")
-    (insert "E = Exercise\n")
-    (insert "G = Guitar Playing\n")
-    (insert "S = Sketching\n")
-    (insert "P = Take a photograph\n")
-    (insert "L = Learning\n")
-    (insert "J = Journaling\n")
     (insert "\n")
     (insert "*** Notable things that happened this week\n"))
 #+end_src
@@ -731,5 +715,6 @@ Brings up some elp
   (set-register ?t (cons 'file (concat org-roam-directory "/_todos.org")))
   (set-register ?p (cons 'file (concat org-roam-directory "/_photography.org")))
   (set-register ?m (cons 'file (concat org-roam-directory "/20220116113541-master_index.org")))
+  (set-register ?b (cons 'file (concat org-roam-directory "/inbox.org")))
   (set-register ?i (cons 'file "~/.emacs.d/my-init.org"))
 #+end_src
