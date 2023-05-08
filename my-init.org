@@ -192,11 +192,15 @@ Brings up some elp
 * File Management
 ** Dired
 #+begin_src emacs-lisp
-  (use-package dired
-    :ensure nil
-    :commands (dired dired-jump)
-    :bind (("C-x C-j" . dired-jump))
-    :custom ((dired-listing-switches "-agho --group-directories-first")))
+    (use-package dired
+      :ensure nil
+      :commands (dired dired-jump)
+      :bind (("C-x C-j" . dired-jump))
+      :custom ((dired-listing-switches "-agho --group-directories-first")))
+    (use-package all-the-icons-dired
+      :ensure t
+      :hook (dired-mode . all-the-icons-dired-mode)
+      :config (setq all-the-icons-dired-monochrome nil))
 #+end_src
 * org-mode
 ** General
@@ -211,6 +215,8 @@ Brings up some elp
   (set-face-underline 'org-ellipsis nil)
   (setq org-return-follows-link t)
 
+  (setq org-list-indent-offset 2)
+  
   (require 'org-tempo)
 #+end_src
 ** org-agenda
@@ -597,7 +603,13 @@ Brings up some elp
     (insert (format-time-string "%e "))
     (insert (format-time-string "%B "))
     (insert (format-time-string "%Y\n"))
-    (insert "*** Working from home - delete if not!\n")
+    (if (or
+         (string-equal (format-time-string "%A") "Monday")
+         (string-equal (format-time-string "%A") "Tuesday")
+         (string-equal (format-time-string "%A") "Wednesday")
+         (string-equal (format-time-string "%A") "Thursday")
+         (string-equal (format-time-string "%A") "Friday"))
+        (insert "*** Working from home - edit or delete if not!\n"))
     (insert "*** In the house\n")
     (insert "*** Out and about\n")
     (insert "*** Food\n")
@@ -615,8 +627,14 @@ Brings up some elp
       (insert (format-time-string "\n** %A " tomorrow))
       (insert (format-time-string "%e " tomorrow))
       (insert (format-time-string "%B " tomorrow))
-      (insert (format-time-string "%Y\n" tomorrow)))
-    (insert "*** Working from home - delete if not!\n")
+      (insert (format-time-string "%Y\n" tomorrow))
+      (if (or
+           (string-equal (format-time-string "%A" tomorrow) "Monday")
+           (string-equal (format-time-string "%A" tomorrow) "Tuesday")
+           (string-equal (format-time-string "%A" tomorrow) "Wednesday")
+           (string-equal (format-time-string "%A" tomorrow) "Thursday")
+           (string-equal (format-time-string "%A" tomorrow) "Friday"))
+          (insert "*** Working from home - edit or delete if not!\n")))
     (insert "*** In the house\n")
     (insert "*** Out and about\n")
     (insert "*** Food\n")
@@ -779,4 +797,9 @@ Brings up some elp
     (setq dashboard-center-content t)
     (setq dashboard-set-heading-icons t)
     (setq dashboard-set-file-icons t))
+#+end_src
+* vterm
+#+begin_src emacs-lisp
+  (use-package vterm
+    :ensure t)
 #+end_src
