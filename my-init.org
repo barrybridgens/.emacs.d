@@ -19,7 +19,7 @@
   (global-set-key (kbd "<f5>") 'revert-buffer)
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-  (defvar efs/frame-transparency '(99 . 99))
+  (defvar efs/frame-transparency '(95 . 95))
 
   (set-face-attribute 'default nil :font "FiraCode Nerd Font")
 
@@ -102,6 +102,16 @@ Brings up some elp
   (use-package avy
     :ensure t
     :bind ("M-s" . avy-goto-char))
+#+end_src
+* Abbrev
+#+begin_src elisp
+  (setq-default abbrev-mode t)
+  ;; save abbreviations upon exiting emacs
+  (setq save-abbrevs t)
+  ;; set the file storing the abbreviations
+  (setq abbrev-file-name "/home/barry/Dropbox/Documents/my-abbreviations.el")
+  ;; reads the abbreviations file on startup
+  (quietly-read-abbrev-file)
 #+end_src
 * ibuffer
 #+begin_src emacs-lisp
@@ -468,6 +478,14 @@ Brings up some elp
     (setq rg-download-timestamp "%Y%m%d-%H%M%S_")
     (setq rg-image-actual-width 300))
 #+end_src
+** org-refile
+#+begin_src emacs-lisp
+  (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+#+end_src
+** ox-latex
+#+begin_src emacs-lisp
+  (require 'ox-latex)
+#+end_src
 * Projectile
 #+begin_src emacs-lisp
   (use-package projectile
@@ -750,6 +768,13 @@ Brings up some elp
 
 ;;  (bjb/leader-keys
 ;;    "ts" '(hydra-text-scale/body :which-key "scale text"))
+#+end_src
+** Window sizing
+#+begin_src emacs-lisp
+  (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+  (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+  (global-set-key (kbd "S-C-<down>") 'shrink-window)
+  (global-set-key (kbd "S-C-<up>") 'enlarge-window)
 #+end_src
 ** My Key Bindings
 #+begin_src emacs-lisp
