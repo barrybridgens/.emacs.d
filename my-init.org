@@ -828,3 +828,22 @@ Brings up some elp
   (use-package vterm
     :ensure t)
 #+end_src
+* org-ai
+#+begin_src elisp
+  (use-package org-ai
+    :ensure t
+    :commands (org-ai-mode
+               org-ai-global-mode)
+    :init
+    (add-hook 'org-mode-hook #'org-ai-mode) ; enable org-ai in org-mode
+    (org-ai-global-mode) ; installs global keybindings on C-c M-a
+    )
+
+  (setq auth-sources
+      '((:source "~/.authinfo.gpg")))
+#+end_src
+* org-ql
+#+begin_src elisp
+  (use-package org-ql
+    :ensure t)
+#+end_src
