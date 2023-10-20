@@ -21,10 +21,10 @@
 
   (defvar efs/frame-transparency '(95 . 95))
 
-  (set-face-attribute 'default nil :font "FiraCode Nerd Font")
+  (set-face-attribute 'default nil :font "FiraCode")
 
   ;; Set the fixed pitch face
-  (set-face-attribute 'fixed-pitch nil :family "FiraCode Nerd Font" :height 1.0)
+  (set-face-attribute 'fixed-pitch nil :family "FiraCode" :height 1.0)
 
   ;; Set the variable pitch face
   (set-face-attribute 'variable-pitch nil :family "Deja Vu Sans" :weight 'regular :height 1.0)
