@@ -19,7 +19,7 @@
   (global-set-key (kbd "<f5>") 'revert-buffer)
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-  (defvar efs/frame-transparency '(95 . 95))
+  (defvar efs/frame-transparency '(97 . 97))
 
   (set-face-attribute 'default nil :font "FiraCode")
 
@@ -570,10 +570,15 @@ Brings up some elp
   (setq inferior-lisp-program "sbcl")
   (global-set-key "\C-cs" 'slime-selector)
 #+end_src
+** Geiser
+#+begin_src emacs-lisp
+  (use-package geiser-guile
+    :ensure t)
+#+end_src
 ** Clojure
 #+begin_src emacs-lisp
-  (use-package cider
-    :ensure t)
+;  (use-package cider
+;    :ensure t)
 #+end_src
 ** Golang
 #+begin_src emacs-lisp
@@ -582,9 +587,44 @@ Brings up some elp
   (use-package go-playground
     :ensure t)
 #+end_src
-#+DOWNLOADED: file:///home/barry/stick/Adam%20blue%20suit.jpg @ 2023-04-22 18:17:15
-[[file:../Dropbox/Documents/org-roam/images/2023-04-22_18-17-15_Adam blue suit.jpg]]
+** C_cpp
+#+begin_src emacs-lisp
+  (defun my-c-mode-hook ()
+    (c-set-offset 'substatement-open 0))
+  (add-hook 'c-mode-hook 'my-c-mode-hook)
+#+end_src
+** Rust
+#+begin_src emacs-lisp
+  (use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
 
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+#+end_src
 * emacs-lisp
 #+begin_src emacs-lisp
   (use-package helpful
