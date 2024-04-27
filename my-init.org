@@ -641,13 +641,36 @@ Brings up some elp
 * My elisp functions
 ** General functions
 #+begin_src emacs-lisp
-(defun bjb-go-dot-emacs-d ()
-  (interactive)
-  (cd "/home/barry/.emacs.d"))
+  (defun bjb-go-dot-emacs-d ()
+    (interactive)
+    (cd "/home/barry/.emacs.d"))
 
-(defun bjb-go-org ()
-  (interactive)
-  (cd "/home/barry/Dropbox/Documents/org"))
+  (defun bjb-go-org ()
+    (interactive)
+    (cd "/home/barry/Dropbox/Documents/org"))
+
+  (defun bjb-count-cameras ()
+    "Count the number of cameras in my cameras table"
+    (interactive)
+    (switch-to-buffer "_photography.org")
+    (goto-char (point-min))
+    (search-forward "* My Cameras" nil nil)
+    (beginning-of-line)
+    (next-line 3)
+    (let ((count 0)
+          (done nil))
+      (while (not done)
+        (beginning-of-line)
+        (if (not (eq (char-after) ?|))
+            (setq done t)
+          (progn
+            (forward-char 2)
+            (if (not (or (eq ?- (char-after)) (eq ?\s (char-after))))
+                (setq count (+ count 1)))))
+        (next-line))
+      (insert "Number of cameras: ")
+      (insert (format "%d" count))))
+
 #+end_src
 ** Journal file functions
 #+begin_src emacs-lisp
@@ -725,6 +748,7 @@ Brings up some elp
     (insert "- [ ] Review / update my goals\n")
     (insert "\n")
     (insert "*** Notable things that happened this week\n"))
+
 #+end_src
 
 ** Table functions
