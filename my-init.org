@@ -231,85 +231,98 @@ Brings up some elp
 #+end_src
 ** org-agenda
 #+begin_src emacs-lisp
-  (setq org-agenda-start-with-log-mode t)
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
+    (setq org-agenda-start-with-log-mode t)
+    (setq org-log-done 'time)
+    (setq org-log-into-drawer t)
 
 
-  (setq org-directory "~/Dropbox/Documents/org")
-  (setq org-roam-directory "~/Dropbox/Documents/org-roam")
-  (setq org-agenda-files (list org-directory org-roam-directory))
+    (setq org-directory "~/Dropbox/Documents/org")
+    (setq org-roam-directory "~/Dropbox/Documents/org-roam")
+    (setq org-agenda-files (list org-directory org-roam-directory))
 
-        ;(setq org-agenda-files (apply 'append
-        ;                              (mapcar
-        ;                               (lambda (directory)
-        ;                                 (directory-files-recursively
-        ;                                  directory org-agenda-file-regexp))
-        ;                               '("~/Dropbox/Documents/org" "~/Dropbox/Documents/org-roam" "~/Dropbox/Documents/org-old"))))
+          ;(setq org-agenda-files (apply 'append
+          ;                              (mapcar
+          ;                               (lambda (directory)
+          ;                                 (directory-files-recursively
+          ;                                  directory org-agenda-file-regexp))
+          ;                               '("~/Dropbox/Documents/org" "~/Dropbox/Documents/org-roam" "~/Dropbox/Documents/org-old"))))
 
-  (setq org-agenda-dim-blocked-tasks 'invisible)
-  (setq org-agenda-todo-ignore-deadlines (quote far))
-  (setq org-deadline-warning-days 2)
-  (setq org-enforce-todo-checkbox-dependencies t)
-  (setq org-enforce-todo-dependencies t)
-  (setq org-hide-leading-stars t)
-  (setq org-startup-indented t)
-                                                ;(setq org-agenda-todo-ignore-scheduled t)
-                                                ;(setq org-agenda-todo-ignore-deadlines t)
+    (setq org-agenda-dim-blocked-tasks 'invisible)
+    (setq org-agenda-todo-ignore-deadlines (quote far))
+    (setq org-deadline-warning-days 2)
+    (setq org-enforce-todo-checkbox-dependencies t)
+    (setq org-enforce-todo-dependencies t)
+    (setq org-hide-leading-stars t)
+    (setq org-startup-indented t)
+                                                  ;(setq org-agenda-todo-ignore-scheduled t)
+                                                  ;(setq org-agenda-todo-ignore-deadlines t)
 
 
-  (setq org-agenda-show-future-repeats 'next)
+    (setq org-agenda-show-future-repeats 'next)
 
-  (setq org-agenda-custom-commands
-        '(
-                ("n" "Agenda and all TODOs"
-                 ((agenda "")
-                  (alltodo "")))
-                ("b" "Barry"
-                 ((todo "NEXT"
-                        ((org-agenda-overriding-header "Next Tasks")))
-                  (todo "INPROG-TODO"
-                        ((org-agenda-block-separator nil)
-                         (org-agenda-overriding-header "\nIn-progress Tasks")))
-                  (agenda ""
+    (setq org-agenda-custom-commands
+          '(
+                  ("n" "Agenda and all TODOs"
+                   ((agenda "")
+                    (alltodo "")))
+                  ("b" "Barry"
+                   ((todo "NEXT"
+                          ((org-agenda-overriding-header "Next Tasks")))
+                    (todo "INPROG-TODO"
                           ((org-agenda-block-separator nil)
-                          (org-agenda-span 1)
-                          (org-deadline-warning-days 0)
-                          (org-agenda-overriding-header "\nDaily Agenda")))
-                  (agenda ""
-                          ((org-agenda-block-separator nil)
-                         (org-agenda-start-day "+1d")
-                         (org-agenda-span 3)
-                         (org-deadline-warning-days 0)
-                         (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                         (org-agenda-overriding-header "\nNext 3 Days")))))
-                ))
+                           (org-agenda-overriding-header "\nIn-progress Tasks")))
+                    (agenda ""
+                            ((org-agenda-block-separator nil)
+                            (org-agenda-span 1)
+                            (org-deadline-warning-days 0)
+                            (org-agenda-overriding-header "\nDaily Agenda")))
+                    (agenda ""
+                            ((org-agenda-block-separator nil)
+                           (org-agenda-start-day "+1d")
+                           (org-agenda-span 3)
+                           (org-deadline-warning-days 0)
+                           (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                           (org-agenda-overriding-header "\nNext 3 Days")))))
+                  ))
 
-  (setq org-agenda-todo-ignore-with-date t)
-  (setq org-todo-keywords
-              '((sequence "TODO" "INPROG-TODO" "NEXT" "WAITING" "PROJECT"
-                          "|"
-                          "DONE" "CANCELLED")))
-  (setq org-todo-keyword-faces '(("TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
-                                       ("INPROG-TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
-                                       ("NEXT" nil :foreground "coral1" :inherit fixed-pitch :weight medium)
-                                       ("WAITINGY" nil :foreground "plum3" :inherit fixed-pitch :weight medium)
-                                       ("PROJECT" nil :foreground "aquamarine3" :inherit fixed-pitch :weight medium)
-				     
-                                       ("DONE" nil :foreground "LawnGreen" :inherit fixed-pitch :weight medium)
-                                       ("CANCELLED" nil :foreground "dark red" :inherit fixed-pitch :weight medium)))
-  (setq org-highest-priority 65)
-  (setq org-lowest-priority 69)
-  (setq org-default-priority 67)
-  (setq org-priority-faces
-              '((65 nil :inherit fixed-pitch :foreground "red2" :weight medium)
-                (66 . "Gold1")
-                (67 . "Goldenrod2")
-                (68 . "PaleTurquoise3")
-                (69 . "DarkSlateGray4")
-                (70 . "PaleTurquoise4")))
-  (add-to-list 'org-modules 'org-habit t)
-  (setq org-treat-insert-todo-heading-as-state-change t)
+    (setq org-agenda-todo-ignore-with-date t)
+    (setq org-todo-keywords
+                '((sequence "TODO" "INPROG-TODO" "NEXT" "WAITING" "PROJECT"
+                            "|"
+                            "DONE" "CANCELLED")))
+    (setq org-todo-keyword-faces '(("TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
+                                         ("INPROG-TODO" nil :foreground "orange1" :inherit fixed-pitch :weight medium)
+                                         ("NEXT" nil :foreground "coral1" :inherit fixed-pitch :weight medium)
+                                         ("WAITINGY" nil :foreground "plum3" :inherit fixed-pitch :weight medium)
+                                         ("PROJECT" nil :foreground "aquamarine3" :inherit fixed-pitch :weight medium)
+
+                                         ("DONE" nil :foreground "LawnGreen" :inherit fixed-pitch :weight medium)
+                                         ("CANCELLED" nil :foreground "dark red" :inherit fixed-pitch :weight medium)))
+    (setq org-highest-priority 65)
+    (setq org-lowest-priority 69)
+    (setq org-default-priority 67)
+    (setq org-priority-faces
+                '((65 nil :inherit fixed-pitch :foreground "red2" :weight medium)
+                  (66 . "Gold1")
+                  (67 . "Goldenrod2")
+                  (68 . "PaleTurquoise3")
+                  (69 . "DarkSlateGray4")
+                  (70 . "PaleTurquoise4")))
+    (add-to-list 'org-modules 'org-habit t)
+    (setq org-treat-insert-todo-heading-as-state-change t)
+
+  ;  ((agenda . " %i %-12:c%?-12t% s")
+  ;   (timeline . "  % s")
+  ;   (todo . " %i %-12:c")
+  ;   (tags . " %i %-12:c")
+  ;   (search . " %i %-12:c"))
+
+  (setq org-agenda-prefix-format '((agenda . " %i %?-12t% s")
+                                     (timeline . "  % s")
+                                     (todo . " %i ")
+                                     (tags . " %i %-40:c")
+                                     (search . " %i %-40:c")))
+
 #+end_src
 ** Fonts
 #+begin_src emacs-lisp
