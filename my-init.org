@@ -499,19 +499,27 @@ Brings up some elp
 #+begin_src emacs-lisp
   (require 'ox-latex)
 #+end_src
+** org-modern
+#+begin_src emacs-lisp
+  ;(use-package org-modern
+  ;  :ensure t
+  ;  :config
+  ;  (add-hook 'org-mode-hook #'org-modern-mode)
+  ;  (add-hook 'org-agenda-finalize-hook #'org-modern-agenda))
+#+end_src
 * Projectile
 #+begin_src emacs-lisp
-  (use-package projectile
-    :diminish projectile-mode
-    :config (projectile-mode)
-    :custom ((projectile-completion-system 'ivy))
-    :bind-keymap
-    ("C-c p" . projectile-command-map)
-    :init
-    ;; NOTE: Set this to the folder where you keep your Git repos!
-    (when (file-directory-p "~/software/projects")
-      (setq projectile-project-search-path '("~/software/projects")))
-    (setq projectile-switch-project-action #'projectile-dired))
+;  (use-package projectile
+;    :diminish projectile-mode
+;    :config (projectile-mode)
+;    :custom ((projectile-completion-system 'ivy))
+;    :bind-keymap
+;    ("C-c p" . projectile-command-map)
+;    :init
+;    ;; NOTE: Set this to the folder where you keep your Git repos!
+;    (when (file-directory-p "~/software/projects")
+;      (setq projectile-project-search-path '("~/software/projects")))
+;    (setq projectile-switch-project-action #'projectile-dired))
 
   ;; (use-package counsel-projectile
   ;;   :ensure t
