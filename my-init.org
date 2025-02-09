@@ -392,7 +392,7 @@ Brings up some elp
     ;;; (org-bullets-bullet-list '(" " " " " " " " " " " " " ")
                              ))
 #+end_src
-** xvisual-fill
+** visual-fill
 #+begin_src emacs-lisp
   (defun bjb/org-mode-visual-fill ()
     (setq visual-fill-column-width 140
@@ -477,7 +477,9 @@ Brings up some elp
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)
-     (R . t)))
+     (R . t)
+     (plantuml . t)))
+  (setq org-plantuml-jar-path "/home/barry/bin/plantuml-mit-1.2024.8.jar")
 #+end_src
 ** org-download
 #+begin_src emacs-lisp
@@ -598,8 +600,8 @@ Brings up some elp
 #+end_src
 ** Clojure
 #+begin_src emacs-lisp
-;  (use-package cider
-;    :ensure t)
+  (use-package cider
+    :ensure t)
 #+end_src
 ** Golang
 #+begin_src emacs-lisp
@@ -699,7 +701,7 @@ Brings up some elp
   (defun bjb-journal-new-entry ()
     "Add a new journal entry at the end of the journal file"
     (interactive)
-    (switch-to-buffer "_journal_2024.org")
+    (switch-to-buffer "_journal_2025.org")
     (goto-char (point-max))
     (if (string-equal (format-time-string "%e") " 1")
         (insert (format-time-string "\n* %B\n")))
@@ -725,7 +727,7 @@ Brings up some elp
   (defun bjb-journal-new-entry-tomorrow ()
     "Add a new journal entry for tomorrow at the end of the journal file"
     (interactive)
-    (switch-to-buffer "_journal_2024.org")
+    (switch-to-buffer "_journal_2025.org")
     (goto-char (point-max))
     (let ((tomorrow (time-add (current-time) (* 60 60 24))))
       (if (string-equal (format-time-string "%e" tomorrow) " 1")
@@ -752,7 +754,7 @@ Brings up some elp
   (defun bjb-new-weekly-review ()
       "Add a new weekly review entry at the end of the journal file"
     (interactive)
-    (switch-to-buffer "_journal_2024.org")
+    (switch-to-buffer "_journal_2025.org")
     (goto-char (point-max))
     (insert (format-time-string "\n** Week %V "))
     (insert (format-time-string "%G - Weekly Review\n"))
@@ -871,7 +873,7 @@ Brings up some elp
 #+end_src
 * Register setup
 #+begin_src emacs-lisp
-  (set-register ?j (cons 'file (concat org-roam-directory "/_journal_2024.org")))
+  (set-register ?j (cons 'file (concat org-roam-directory "/_journal_2025.org")))
   (set-register ?n (cons 'file (concat org-roam-directory "/_quick_notes.org")))
   (set-register ?t (cons 'file (concat org-roam-directory "/_todos.org")))
   (set-register ?p (cons 'file (concat org-roam-directory "/_photography.org")))
@@ -917,10 +919,22 @@ Brings up some elp
   (use-package vterm
     :ensure t)
 #+end_src
+* Auto Revert Mode
+#+begin_src emacs-lisp
+  (global-auto-revert-mode)
+#+end_src
 * Nixos
 #+begin_src emacs-lisp
   (use-package nix-mode
     :ensure t)
+#+end_src
+* Plant UML
+#+begin_src emacs-lisp
+  (use-package plantuml-mode
+    :ensure t
+    :config
+    (setq plantuml-jar-path "/home/barry/bin/plantuml-mit-1.2024.8.jar")
+    (setq plantuml-default-exec-mode 'jar))
 #+end_src
 * org-ai
 #+begin_src elisp
