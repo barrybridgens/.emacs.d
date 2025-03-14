@@ -395,13 +395,14 @@ Brings up some elp
 ** visual-fill
 #+begin_src emacs-lisp
   (defun bjb/org-mode-visual-fill ()
-    (setq visual-fill-column-width 140
+    (setq visual-fill-column-width 80
           visual-fill-column-center-text t)
     (visual-fill-column-mode 1))
 
   (use-package visual-fill-column
     :ensure t
     :hook (org-mode . bjb/org-mode-visual-fill))
+  (setq-default visual-fill-column-center-text t)
 #+end_src
 ** org-roam
 #+begin_src emacs-lisp
